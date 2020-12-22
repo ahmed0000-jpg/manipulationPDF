@@ -19,6 +19,7 @@ ftp.cwd('/Preprod/IN/POC_ON_DEMAND/INPUT/ClientInput')
 
 clients = ftp.nlst()
 print(clients)
+os.mkdir("ClientInput")
 for client in clients:
     path_racine = '/Preprod/IN/POC_ON_DEMAND/INPUT/ClientInput'
     path_client = path_racine + '/' + client
@@ -27,11 +28,11 @@ for client in clients:
     liste_fichier_client = ftp.nlst(path_client)
     print(liste_fichier_client)
     if(len(liste_fichier_client) != 0):
-        os.mkdir(client)
+        os.mkdir("ClientInput/"+ client)
         for fichier in liste_fichier_client:
             file_name = fichier.split('/')[7]
             print(file_name)
             with open(file_name, "wb") as file:
                 commande = "RETR " + file_name
                 ftp.retrbinary(commande, file.write)
-            shutil.move(file_name, client)
+            shutil.move(file_name, "ClientInput/"+ client)
